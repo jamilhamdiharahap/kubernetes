@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ReplicaSet
+metadata:
+  name: example-reflicaset
+  labels:
+    app: example-reflicaset
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: backend
+  template:
+    metadata:
+      labels:
+        tier: backend
+    spec:
+      containers:
+      - name: example-reflicaset
+        image: hamdi06/app-v1-backend
+        ports:
+          containerPort: 8089

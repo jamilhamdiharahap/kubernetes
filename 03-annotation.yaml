@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotation
+  labels:
+    bahasa: ID
+    type: BE
+    lang: golang
+  annotations:
+    description: kubernetes ok
+spec:
+  containers:
+  - name: app-v1
+    image: hamdi06/app-v1-backend
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8089
