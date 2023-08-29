@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment-volume
+spec:
+  selector:
+    matchLabels:
+      app: example-deployment-volume
+  template:
+    metadata:
+      labels:
+        app: example-deployment-volume
+    spec:
+      containers:
+        - name: example-deployment-volume
+          image: hamdi06/app-v1-backend
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: disk
+              mountPath: /app/data
+      volumes:
+        - name: disk
+          hostPath:
+            path: /home/data-host

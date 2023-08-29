@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: example-persistent-volume
+spec:
+  capacity:
+    storage: 4Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/persistent-volume
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: example-persistent-claim
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contoh-pod-pv
+spec:
+  selector:
+    matchLabels:
+      app: contoh-pod-pv
+  template:
+    metadata:
+      labels:
+        app: contoh-pod-pv
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: example-persistent-claim
+      containers:
+        - name: contoh-pod-pv
+          image: hamdi06/app-v1-backend
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: data
+              mountPath: /app/data

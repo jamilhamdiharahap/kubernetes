@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-volume
+spec:
+  selector:
+    matchLabels:
+      app: deployment-volume
+  template:
+    metadata:
+      labels:
+        app: deployment-volume
+    spec:
+      containers:
+        - name: app-v1
+          image: hamdi06/app-v1-backend
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: disk
+              mountPath: /app/data
+        - name: loadbalancer
+          image: nginx
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 4000
+          volumeMounts:
+            - name: disk
+              mountPath: /root/volume
+      volumes:
+        - name: disk
+          hostPath:
+            path: /home/data-host
